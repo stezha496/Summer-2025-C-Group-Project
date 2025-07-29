@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Group_Project_Console_Test_App
+namespace Group_Project_Class_Library
 {
-    internal class Program
+    internal class Class4
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
