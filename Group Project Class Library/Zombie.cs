@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    internal class Class2
+    internal class Zombie : Entity
     {
     }
 }
