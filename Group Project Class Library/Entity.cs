@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    public class Class1
+    internal class Entity
     {
+        private int id;
     }
 }
