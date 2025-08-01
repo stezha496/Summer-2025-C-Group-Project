@@ -8,7 +8,5 @@ namespace Group_Project_Class_Library
 {
     internal class Entity
     {
-        private int id;
-        private int location;
     }
 }
