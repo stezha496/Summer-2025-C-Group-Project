@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Universe.cs" />
     <Compile Include="Zombie.cs" />
