@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
+    public enum HealingFactor
+    {
+        Low = 1,
+        Medium = 2,
+        High = 3
+    }
+
     public class Human : Entity
     {
         private int age;
