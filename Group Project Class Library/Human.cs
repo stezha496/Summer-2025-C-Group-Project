@@ -8,10 +8,14 @@ namespace Group_Project_Class_Library
 {
     public enum HealingFactor
     {
-        Low = 1,
-        Medium = 2,
-        High = 3
+        NONE,
+        LV1,
+        LV2,
+        LV3,
+        LV4,
+        LV5
     }
+
 
     public class Human : Entity
     {
