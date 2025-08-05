@@ -23,6 +23,7 @@ namespace Group_Project_Class_Library
         {
             zombieIdCounter++;
             this.id = zombieIdCounter;
+            
         }
 
         public void IncrementHumansConverted()

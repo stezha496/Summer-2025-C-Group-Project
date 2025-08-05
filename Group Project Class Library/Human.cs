@@ -23,7 +23,7 @@ namespace Group_Project_Class_Library
         private string occupation;
         private HealingFactor healingFactor;
         private bool encounteredZombie;
-        private bool convertedToZombie;
+        private Boolean convertedToZombie;
 
         public Human(int age, string occupation, HealingFactor healingFactor)
         {
@@ -44,12 +44,12 @@ namespace Group_Project_Class_Library
             this.encounteredZombie = encounteredZombie;
         }
 
-        public bool GetConvertedToZombie()
+        public Boolean getConvertedToZombie()
         {
             return convertedToZombie;
         }
 
-        public void SetConvertedToZombie(bool convertedToZombie)
+        public void SetConvertedToZombie(Boolean convertedToZombie)
         {
             this.convertedToZombie = convertedToZombie;
         }
