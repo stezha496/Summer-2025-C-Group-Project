@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
+    //Console app
     internal class Display
     {
 
@@ -27,6 +28,25 @@ namespace Group_Project_Class_Library
             Console.WriteLine("Enter the initial number of zombies: ");
             int initialZombies = Convert.ToInt32(Console.ReadLine());
             return initialZombies;
+        }
+
+        public int num_of_dimensions() {
+            Console.WriteLine("How many dimensions: ");
+            int num_of_dimensions = Convert.ToInt32(Console.ReadLine());
+            return num_of_dimensions;
+
+        }
+
+
+
+        public int[] arraySizes(int num_of_dimensions) {
+            int[] dimensions = new int[num_of_dimensions];
+            for (int i = 0; i < num_of_dimensions; i++) {
+                Console.WriteLine("Enter size of dimension number {0}:",i+1);
+                dimensions[i] = Convert.ToInt32(Console.ReadLine());
+            }
+
+            return dimensions;
         }
     }
 }

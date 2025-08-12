@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    public class Zombie : Entity
+    internal class Zombie : Entity
     {
         private bool isBloodSucker;
         private bool isBrainSucker;

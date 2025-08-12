@@ -14,9 +14,10 @@ namespace Group_Project_Class_Library
 
         private List<Human> humans { get; }
         private List<Zombie> zombies { get; }
+
         private Array area;
-        private int numIterations { get; set; }
-        private int numDimensions { get; set; }
+        private int num_of_iterations { get; set; }
+        private int num_of_dimensions { get; set; }
 
         // Might need a function to find a human or a zombie. Returns the coordinates.
         // What is iterations?
@@ -46,31 +47,11 @@ namespace Group_Project_Class_Library
             return humans; 
         }
 
-        // For size, I am assuming length and height will always be the same: x by x. Ex: 2x2, 4x4, 5x5x5x5, etc.
-        public void buildUniverse(int dimensions, int size)
-        {
-            // Manual: since it is up to 5, just do 5 checks
-            // Automated: ???
+        public int getNum_of_dimensions() { return num_of_dimensions; }
+        public void setNum_of_dimensions(int num) { this.num_of_dimensions = num; }
 
-            switch (dimensions)
-            {
-                case 1:
-                    this.area = new Entity[size];
-                    break;
-                case 2:
-                    this.area = new Entity[size, size];
-                    break;
-                case 3:
-                    this.area = new Entity[size, size, size];
-                    break;
-                case 4:
-                    this.area = new Entity[size, size, size, size];
-                    break;
-                case 5:
-                    this.area = new Entity[size, size, size, size, size];
-                    break;
-            }
-        }
+
+        
 
         //dimensions array has all the dimensions, 
         //index 0 = 1d
@@ -80,34 +61,52 @@ namespace Group_Project_Class_Library
         //index 4 = 5d
 
         //4x2x3x5 would mean an array of 4x1, each element is an array of 2x1, each element of 2x1 is 3x1 and every element of 3x1 is a 5x1 array
+
+        //Had to make an array for each dimension
+        //Only creates one area for the num of dimensions we are working with
         public void buildUniverse2(int[] dimensions) {
-            int num_of_dimensions = dimensions.Length;
+            num_of_dimensions = dimensions.Length;
 
             if (num_of_dimensions == 1) {
 
-                this.area = new Entity[dimensions[0], dimensions[1]];
+                this.area = new Entity[dimensions[0]];
             }
 
-            if (num_of_dimensions == 2)
+            else if (num_of_dimensions == 2)
+            {
+
+                this.area = new Entity[dimensions[0], dimensions[1]];
+                
+            }
+
+            else if (num_of_dimensions == 3)
             {
 
                 this.area = new Entity[dimensions[0], dimensions[1], dimensions[2]];
             }
 
-            if (num_of_dimensions == 3)
+            else if (num_of_dimensions == 4)
             {
 
                 this.area = new Entity[dimensions[0], dimensions[1], dimensions[2], dimensions[3]];
+                
             }
-
-            if (num_of_dimensions == 4)
+            else if (num_of_dimensions == 5)
             {
 
                 this.area = new Entity[dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[4]];
 
             }
-            
+
         }
+
+
+
+        public Array getArea() {
+            return area;
+        }
+
+
 
         //to do: create occupations for humans
         public Human createRandomHuman() {
@@ -131,4 +130,8 @@ namespace Group_Project_Class_Library
         //I do not think we need createRandomZombie
 
     }
+
+        
+
+
 }

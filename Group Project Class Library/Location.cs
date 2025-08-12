@@ -8,13 +8,19 @@ namespace Group_Project_Class_Library
 {
     internal class Location
     {
-        private Array coordinates { get; set; }
+        //Assign location from GameLogic class
+        public int[] coordinates { get; set; }
 
         // This is auto generated from Visual Studio. idk if it works 100% correctly
-        public override bool Equals(object obj)
+        public bool Equals(Array coordinates)
         {
-            return obj is Location location &&
-                   EqualityComparer<Array>.Default.Equals(coordinates, location.coordinates);
+            //the moment a dimension is not the same, isEqual will be false
+            bool isEqual = true;
+            for (int i = 0; i<this.coordinates.Length; i++) {
+                isEqual = this.coordinates.GetValue(i) == coordinates.GetValue(i);
+            }
+
+            return isEqual;
         }
     }
 }
