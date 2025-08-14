@@ -140,7 +140,65 @@ namespace Group_Project_Class_Library
         }
 
 
+        //Determines which direction to move iniside an array
+        //Prevent index out of bounds
+        public Entity moveInArray(Entity e, int dimension) {
+            //lines up array length with the appropriate index
+            dimension--;
 
+            //if the entity is at index zero, move up one index
+            if (e.Location.coordinates[dimension] == 0) 
+            {
+                e.Location.coordinates[dimension]++;
+            }
+
+            //if the entity is at the end of the index, it can only move down one index
+            else if (e.Location.coordinates[dimension] == e.Location.coordinates.GetLength(dimension))
+            {
+                e.Location.coordinates[dimension]--;
+            }
+
+            
+            else {
+                //if 1, go up one index
+                //if 0, go down one index
+                int up = rand.Next(2);
+                if (up == 1) {
+                    e.Location.coordinates[dimension]++;
+                }
+                else {
+                    e.Location.coordinates[dimension]--;
+                }
+            }
+                return e;
+        }
+
+
+
+        //used when moving, use id from entity
+        //traverse
+        public void setIndexToNull(int id) {
+            foreach (Entity e in area) {
+                if (e.getId() == id) {
+                    if (e.Location.coordinates.Length == 1) {
+                        area.SetValue(null, e.Location.coordinates[0]);
+                    }
+                }
+            }
+        }
+
+        //jumping from one dimension to the other
+        // if going down a dimension, an entity can go to any spot in that arry (random)
+        //if going up an array, keep the same index for the array that the entity is going to, create new coordinates without the lower array
+        public void moveAcrossArrays(Entity e, int dimension) {
+            //Can only do to second dimension
+            if (dimension == 1) { 
+                //find entity in area - make searchEntity method
+                //set to null
+                //put that entity in a random spot in the next dimension moveAcrossDimension
+                
+            }
+        }
 
 
 
@@ -148,7 +206,7 @@ namespace Group_Project_Class_Library
         public void move(Entity e)
         {
             Array coordinates = e.Location.coordinates;
-            int dimension = coordinates.Length;
+            int dimension = coordinates.Length; //finds which dimension the entity is in 
             //either 0 or 1
             //if zero, move one space in the array that the entity is in
             //if one, move across the dimensions
@@ -157,11 +215,34 @@ namespace Group_Project_Class_Library
 
             if (moveDirection == 0) {
                 if (dimension == 1) {
-                    area.SetValue(null, (int)coordinates.GetValue(0));
+                    e = moveInArray(e, dimension);
+                }
+
+                else if (dimension == 2)
+                {
+                    e = moveInArray(e, dimension);
+                }
+
+                else if (dimension == 3)
+                {
+                    e = moveInArray(e, dimension);
+                }
+
+                else if (dimension == 4)
+                {
+                    e = moveInArray(e, dimension);
+                }
+
+                else if (dimension == 5)
+                {
+                    e = moveInArray(e, dimension);
                 }
             }
 
-            else if (moveDirection == 1) { }
+            //moveAcrossArrays()
+            else if (moveDirection == 1) { 
+                
+            }
 
 
 

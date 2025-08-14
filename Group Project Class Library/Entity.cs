@@ -19,5 +19,7 @@ namespace Group_Project_Class_Library
         {
             id = ++globalId;
         }
+
+        public int getId() { return id; }
     }
 }

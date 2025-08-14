@@ -12,12 +12,12 @@ namespace Group_Project_Class_Library
         public int[] coordinates { get; set; }
 
         // This is auto generated from Visual Studio. idk if it works 100% correctly
-        public bool Equals(Array coordinates)
+        public bool Equals(int[] coordinates)
         {
             //the moment a dimension is not the same, isEqual will be false
             bool isEqual = true;
             for (int i = 0; i<this.coordinates.Length; i++) {
-                isEqual = this.coordinates.GetValue(i) == coordinates.GetValue(i);
+                isEqual = this.coordinates[i] == coordinates[i];
             }
 
             return isEqual;
