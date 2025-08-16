@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Group_Project_Class_Library
 {
@@ -49,13 +50,13 @@ namespace Group_Project_Class_Library
 
 
 
-       
+ 
 
 
 
-        //assigning values to the entitys coordinates based on their place in the array
+        //finds the entity, assigns value to coordinate based on its place in area
         //assumes location class in already assigned to the entity use createLocation
-        public Entity assignCoordintates(Entity e) {
+        public Entity assignCoordinates(Entity e) {
             List<Entity> entityList;
             int[] coordinates;
             if (num_of_dimensions == 1)
@@ -180,6 +181,7 @@ namespace Group_Project_Class_Library
         }
 
 
+        //initializing entities location
         public Location createLocation(int[] entityDimensions) { 
             Location l = new Location();
             l.coordinates = entityDimensions;
@@ -210,7 +212,7 @@ namespace Group_Project_Class_Library
                 {
                     entityList.Add(e);
                     int[] coordinates = { oneDimension };
-                    //e.Location = createLocation(coordinates);
+                    e.Location = createLocation(coordinates);
                     area.SetValue(entityList, oneDimension);
                 }
             }
@@ -227,7 +229,7 @@ namespace Group_Project_Class_Library
                 {
                     entityList.Add(e);
                     int[] coordinates = { oneDimension, twoDimension };
-                    //e.Location = createLocation(coordinates);
+                    e.Location = createLocation(coordinates);
                     area.SetValue(entityList, oneDimension, twoDimension);
                 }
             }
@@ -246,7 +248,7 @@ namespace Group_Project_Class_Library
                 {
                     entityList.Add(e);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension };
-                    //e.Location = createLocation(coordinates);
+                    e.Location = createLocation(coordinates);
                     area.SetValue(entityList, oneDimension, twoDimension, threeDimension);
                 }
             }
@@ -266,7 +268,7 @@ namespace Group_Project_Class_Library
                 {
                     entityList.Add(e);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension };
-                    //e.Location = createLocation(coordinates);
+                    e.Location = createLocation(coordinates);
                     area.SetValue(entityList, oneDimension, twoDimension, threeDimension, fourDimension);
                 }
             }
@@ -287,7 +289,7 @@ namespace Group_Project_Class_Library
             {
                     entityList.Add(e);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension };
-                    //e.Location = createLocation(coordinates);
+                    e.Location = createLocation(coordinates);
                     area.SetValue(entityList, oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
                 }
             }
@@ -299,6 +301,7 @@ namespace Group_Project_Class_Library
 
         //Determines which direction to move iniside an array
         //Prevent index out of bounds
+        // dimension refers to the dimension that the entity (e) is currently in, not to be confused with num_of_dimensions
         public Entity moveInArray(Entity e, int dimension) {
             //lines up array length with the appropriate index.   
             dimension--;
@@ -327,7 +330,120 @@ namespace Group_Project_Class_Library
                     e.Location.coordinates[dimension]--;
                 }
             }
-                return e;
+
+            //remove entity from current spot in the area
+            // assign it to the spot in the area based on coordinate
+
+            //correcting the dimensions now that we are not using it as an index anymore
+            dimension++;
+            foreach (List<Entity> list in area) {
+                foreach (Entity entity in list) {
+                    if (e.getId() == entity.getId()) { 
+                        list.Remove(entity);
+                    }
+                }
+            }
+
+            List<Entity> entityList;
+            if (dimension == 1)
+            {
+                //adding this because I dont think GetLength works on 1d arrays
+                int length = 0;
+                if (num_of_dimensions > 1) length = area.GetLength(0);
+                if (num_of_dimensions == 1) length = area.Length;
+
+                for (int i = 0; i < length; i++) {
+                    if (i == e.Location.coordinates[0])
+                    {
+                        entityList = (List<Entity>) area.GetValue(i);
+                        entityList.Add(e);
+                        area.SetValue(entityList, i);
+                    }
+                }
+            }
+
+            else if (dimension == 2) {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        if (i == e.Location.coordinates[0] && j == e.Location.coordinates[1])
+                        {
+                            entityList = (List<Entity>)area.GetValue(i, j);
+                            entityList.Add(e);
+                            area.SetValue(entityList, i, j);
+                        }
+                    }
+                }
+            }
+
+            else if (dimension == 3)
+            {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++)
+                        {
+                            if (i == e.Location.coordinates[0] && j == e.Location.coordinates[1] && k == e.Location.coordinates[2])
+                            {
+                                entityList = (List<Entity>)area.GetValue(i, j, k);
+                                entityList.Add(e);
+                                area.SetValue(entityList, i, j, k);
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (dimension == 4)
+            {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++)
+                        {
+                            for (int l = 0; l < area.GetLength(3); l++)
+                            {
+                                if (i == e.Location.coordinates[0] && j == e.Location.coordinates[1] && k == e.Location.coordinates[2] && l == e.Location.coordinates[3])
+                                {
+                                    entityList = (List<Entity>)area.GetValue(i, j, k, l);
+                                    entityList.Add(e);
+                                    area.SetValue(entityList, i, j, k, l);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (dimension == 5)
+            {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++)
+                        {
+                            for (int l = 0; l < area.GetLength(3); l++)
+                            {
+                                for (int m = 0; m < area.GetLength(3); m++) { 
+                                    if (i == e.Location.coordinates[0] && j == e.Location.coordinates[1] && k == e.Location.coordinates[2] && l == e.Location.coordinates[3] && m == e.Location.coordinates[4])
+                                    {
+                                        entityList = (List<Entity>)area.GetValue(i, j, k, l, m);
+                                        entityList.Add(e);
+                                        area.SetValue(entityList, i, j, k, l, m);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            return e;
         }
 
 
@@ -367,7 +483,7 @@ namespace Group_Project_Class_Library
         public void move(Entity e)
         {
             Array coordinates = e.Location.coordinates;
-            int dimension = coordinates.Length; //finds which dimension the entity is in.  [4, 2 , 1] would be 3d
+            int dimension = coordinates.Length; //finds which dimension the entity is in.  [4, 2 , 1] would be the third dimension
 
             //either 0 or 1
             //if zero, move one space in the array that the entity is in
@@ -416,16 +532,6 @@ namespace Group_Project_Class_Library
             maxIterations = d.iterations();
             initialHumans = d.startingHumans();
 
-            for (int i = 0; i < initialHumans; i++) {
-                universe.addHuman(universe.createRandomHuman());
-            }
-
-            initialZombies = d.startingZombies();
-            for (int i = 0; i < initialZombies; i++) {
-                universe.addZombie(new Zombie());
-
-            }
-
 
 
             num_of_dimensions = d.num_of_dimensions();
@@ -439,15 +545,22 @@ namespace Group_Project_Class_Library
 
             area = universe.getArea();
 
-            //do randomInitialSpace in for loops above
+            //for these two loops, create then appropriate amount of entities, add them to humans/zombies array, then add them randomly in the area
+            for (int i = 0; i < initialHumans; i++)
+            {
+                Human h = universe.createRandomHuman();
+                universe.addHuman(h);
+                randomInitialPlace(h);
+            }
 
-            
+            initialZombies = d.startingZombies();
+            for (int i = 0; i < initialZombies; i++)
+            {
+                Zombie z = new Zombie();
+                universe.addZombie(z);
+                randomInitialPlace(z);
 
-
-
-
-
-
+            }
 
 
 
