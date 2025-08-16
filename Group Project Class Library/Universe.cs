@@ -69,32 +69,32 @@ namespace Group_Project_Class_Library
 
             if (num_of_dimensions == 1) {
 
-                this.area = new Entity[dimensions[0]];
+                this.area = new List<Entity>[dimensions[0]];
             }
 
             else if (num_of_dimensions == 2)
             {
 
-                this.area = new Entity[dimensions[0], dimensions[1]];
+                this.area = new List<Entity>[dimensions[0], dimensions[1]];
                 
             }
 
             else if (num_of_dimensions == 3)
             {
 
-                this.area = new Entity[dimensions[0], dimensions[1], dimensions[2]];
+                this.area = new List<Entity>[dimensions[0], dimensions[1], dimensions[2]];
             }
 
             else if (num_of_dimensions == 4)
             {
 
-                this.area = new Entity[dimensions[0], dimensions[1], dimensions[2], dimensions[3]];
+                this.area = new List<Entity>[dimensions[0], dimensions[1], dimensions[2], dimensions[3]];
                 
             }
             else if (num_of_dimensions == 5)
             {
 
-                this.area = new Entity[dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[4]];
+                this.area = new List<Entity>[dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[4]];
 
             }
 
