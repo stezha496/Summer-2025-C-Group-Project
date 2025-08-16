@@ -53,6 +53,97 @@ namespace Group_Project_Class_Library
         //}
 
 
+
+        //match entity coordinates with area the area index where that same entity is
+        //used for existing entities
+        public Entity assignCoordintates(Entity e) {
+            Entity entity;//
+            if (num_of_dimensions == 1)
+            {
+                for (int i = 0; i < area.Length; i++) {
+                    entity = (Entity)area.GetValue(i);
+                    if (entity.getId() == e.getId())
+                    {
+                        e.Location.coordinates[0] = i;
+                    }
+                }
+            }
+
+            else if (num_of_dimensions == 2) {
+                for (int i = 0; i < area.GetLength(0);i++) {
+                    for (int j = 0; j < area.GetLength(1); j++) {
+                        entity = (Entity)area.GetValue(i);
+                        if (entity.getId() == e.getId())
+                        {
+                            e.Location.coordinates[0] = i;
+                        }
+                    }
+                }
+            }
+
+            else if (num_of_dimensions == 3) {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++) {
+                            entity = (Entity)area.GetValue(i);
+                            if (entity.getId() == e.getId())
+                            {
+                                e.Location.coordinates[0] = i;
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (num_of_dimensions == 4) {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++)
+                        {
+                            for (int l = 0; l < area.GetLength(3); l++) {
+                                entity = (Entity)area.GetValue(i);
+                                if (entity.getId() == e.getId())
+                                {
+                                    e.Location.coordinates[0] = i;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (num_of_dimensions == 5) {
+                for (int i = 0; i < area.GetLength(0); i++)
+                {
+                    for (int j = 0; j < area.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < area.GetLength(2); k++)
+                        {
+                            for (int l = 0; l < area.GetLength(3); l++)
+                            {
+                                for (int m = 0; m < area.Length; m++) {
+                                    entity = (Entity)area.GetValue(i);
+                                    if (entity.getId() == e.getId())
+                                    {
+                                        e.Location.coordinates[0] = i;
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return e;
+        }
+
+
         public Location createLocation(int[] entityDimensions) { 
             Location l = new Location();
             l.coordinates = entityDimensions;
