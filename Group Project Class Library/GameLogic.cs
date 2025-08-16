@@ -298,52 +298,8 @@ namespace Group_Project_Class_Library
 
         }
 
-
-        //Determines which direction to move iniside an array
-        //Prevent index out of bounds
-        // dimension refers to the dimension that the entity (e) is currently in, not to be confused with num_of_dimensions
-        public Entity moveInArray(Entity e, int dimension) {
-            //lines up array length with the appropriate index.   
-            dimension--;
-
-            //if the entity is at index zero, it can only move up one index
-            if (e.Location.coordinates[dimension] == 0) 
-            {
-                e.Location.coordinates[dimension]++;
-            }
-
-            //if the entity is at the end of the index, it can only move down one index
-            else if (e.Location.coordinates[dimension] == e.Location.coordinates.GetLength(dimension))
-            {
-                e.Location.coordinates[dimension]--;
-            }
-
-            //can go up or down one index
-            else {
-                //if 1, go up one index
-                //if 0, go down one index
-                int up = rand.Next(2);
-                if (up == 1) {
-                    e.Location.coordinates[dimension]++;
-                }
-                else {
-                    e.Location.coordinates[dimension]--;
-                }
-            }
-
-            //remove entity from current spot in the area
-            // assign it to the spot in the area based on coordinate
-
-            //correcting the dimensions now that we are not using it as an index anymore
-            dimension++;
-            foreach (List<Entity> list in area) {
-                foreach (Entity entity in list) {
-                    if (e.getId() == entity.getId()) { 
-                        list.Remove(entity);
-                    }
-                }
-            }
-
+        //Adds entity to area based on their coordinate
+        public void coordinateToArea(Entity e, int dimension) {
             List<Entity> entityList;
             if (dimension == 1)
             {
@@ -352,17 +308,19 @@ namespace Group_Project_Class_Library
                 if (num_of_dimensions > 1) length = area.GetLength(0);
                 if (num_of_dimensions == 1) length = area.Length;
 
-                for (int i = 0; i < length; i++) {
+                for (int i = 0; i < length; i++)
+                {
                     if (i == e.Location.coordinates[0])
                     {
-                        entityList = (List<Entity>) area.GetValue(i);
+                        entityList = (List<Entity>)area.GetValue(i);
                         entityList.Add(e);
                         area.SetValue(entityList, i);
                     }
                 }
             }
 
-            else if (dimension == 2) {
+            else if (dimension == 2)
+            {
                 for (int i = 0; i < area.GetLength(0); i++)
                 {
                     for (int j = 0; j < area.GetLength(1); j++)
@@ -428,7 +386,8 @@ namespace Group_Project_Class_Library
                         {
                             for (int l = 0; l < area.GetLength(3); l++)
                             {
-                                for (int m = 0; m < area.GetLength(3); m++) { 
+                                for (int m = 0; m < area.GetLength(3); m++)
+                                {
                                     if (i == e.Location.coordinates[0] && j == e.Location.coordinates[1] && k == e.Location.coordinates[2] && l == e.Location.coordinates[3] && m == e.Location.coordinates[4])
                                     {
                                         entityList = (List<Entity>)area.GetValue(i, j, k, l, m);
@@ -441,6 +400,53 @@ namespace Group_Project_Class_Library
                     }
                 }
             }
+        }
+        //Determines which direction to move iniside an array
+        //Prevent index out of bounds
+        // dimension refers to the dimension that the entity (e) is currently in, not to be confused with num_of_dimensions
+        public Entity moveInArray(Entity e, int dimension) {
+            //lines up array length with the appropriate index.   
+            dimension--;
+
+            //if the entity is at index zero, it can only move up one index
+            if (e.Location.coordinates[dimension] == 0) 
+            {
+                e.Location.coordinates[dimension]++;
+            }
+
+            //if the entity is at the end of the index, it can only move down one index
+            else if (e.Location.coordinates[dimension] == e.Location.coordinates.GetLength(dimension))
+            {
+                e.Location.coordinates[dimension]--;
+            }
+
+            //can go up or down one index
+            else {
+                //if 1, go up one index
+                //if 0, go down one index
+                int up = rand.Next(2);
+                if (up == 1) {
+                    e.Location.coordinates[dimension]++;
+                }
+                else {
+                    e.Location.coordinates[dimension]--;
+                }
+            }
+
+            //remove entity from current spot in the area
+            // assign it to the spot in the area based on coordinate
+
+            //correcting the dimensions now that we are not using it as an index anymore
+            dimension++;
+            foreach (List<Entity> list in area) {
+                foreach (Entity entity in list) {
+                    if (e.getId() == entity.getId()) { 
+                        list.Remove(entity);
+                    }
+                }
+            }
+
+            coordinateToArea(e, dimension);
 
 
             return e;
@@ -464,17 +470,111 @@ namespace Group_Project_Class_Library
             }
         }
 
+
+        //[5, 2, 6, 2] would become [5, 2, 6], no random needed
+        public int[] goDownOneDimension(Entity e, int dimension) {
+            int[] entityDimensions = new int[dimension - 1];  //one less number since we are going down a dimension
+            for (int i = 0; i < dimension - 1; i++)
+            {
+                entityDimensions[i] = e.Location.coordinates[i];
+            }
+            return entityDimensions;
+        }
+
+
+        public int[] goUpOneDimension(Entity e, int dimension)
+        {
+            int[] entityDimensions = new int[++dimension];  //one more number since we are going down a dimension
+            for (int i = 0; i < e.Location.coordinates.Length - 1; i++)
+            {
+                entityDimensions[i] = e.Location.coordinates[i];
+            }
+            
+
+            //The last element of entityDimension will be a random number that is in the bounds of the respective array in area
+            if (dimension == 2) {
+                entityDimensions[entityDimensions.Length - 1] = rand.Next(area.GetLength(1));
+            }
+
+            else if (dimension == 3)
+            {
+                entityDimensions[entityDimensions.Length - 1] = rand.Next(area.GetLength(2));
+            }
+
+            else if (dimension == 4)
+            {
+                entityDimensions[entityDimensions.Length - 1] = rand.Next(area.GetLength(3));
+            }
+
+            else if (dimension == 5)
+            {
+                entityDimensions[entityDimensions.Length - 1] = rand.Next(area.GetLength(4));
+            }
+            return entityDimensions;
+        }
+
+
+
         //jumping from one dimension to the other
         // if going down a dimension, an entity can go to any spot in that arry (random)
         //if going up an array, keep the same index for the array that the entity is going to, create new coordinates without the lower array
-        public void moveAcrossArrays(Entity e, int dimension) {
-            //Can only do to second dimension
-            if (dimension == 1) { 
-                //find entity in area - make searchEntity method
-                //set to null
-                //put that entity in a random spot in the next dimension moveAcrossDimension
-                
+        //only possible if the user selects above 1d for the game area
+        public Entity moveAcrossArrays(Entity e, int dimension) {
+            foreach (List<Entity> list in area)
+            {
+                foreach (Entity entity in list)
+                {
+                    if (entity.getId() == e.getId())
+                    {
+                        list.Remove(entity);
+                    }
+                }
             }
+
+            int[] entityDimensions;
+
+            //Can only go up one dimension
+            if (dimension == 1 && num_of_dimensions > 1)
+            {
+                entityDimensions = new int[2];
+                entityDimensions[0] = e.Location.coordinates[0];
+                entityDimensions[1] = rand.Next(area.GetLength(1));
+                e.Location.coordinates = entityDimensions;
+                dimension = 2;
+
+            }
+
+            //can only go down one
+            else if (dimension == num_of_dimensions && dimension > 1)
+            {
+                entityDimensions = goDownOneDimension(e, dimension);
+                dimension--;
+                e.Location.coordinates = entityDimensions;
+            }
+
+            //up or down
+            else {
+                // 0 - go down
+                // 1 - go up
+                int direction = rand.Next(2);
+
+                if (direction == 0) {
+                    entityDimensions = goDownOneDimension(e, dimension);
+                    dimension--;
+                    e.Location.coordinates = entityDimensions;
+                }
+
+                else if (direction == 1)
+                {
+                    entityDimensions = goUpOneDimension(e, dimension);
+                    dimension++;
+                    e.Location.coordinates = entityDimensions;
+
+                }
+            }
+
+            coordinateToArea(e, dimension);
+            return e;
         }
 
 
@@ -492,34 +592,12 @@ namespace Group_Project_Class_Library
 
 
             if (moveDirection == 0) {
-                if (dimension == 1) {
-                    e = moveInArray(e, dimension);
-                }
-
-                else if (dimension == 2)
-                {
-                    e = moveInArray(e, dimension);
-                }
-
-                else if (dimension == 3)
-                {
-                    e = moveInArray(e, dimension);
-                }
-
-                else if (dimension == 4)
-                {
-                    e = moveInArray(e, dimension);
-                }
-
-                else if (dimension == 5)
-                {
-                    e = moveInArray(e, dimension);
-                }
+                e = moveInArray(e, dimension);
             }
 
             //moveAcrossArrays()
             else if (moveDirection == 1) { 
-                
+                e = moveAcrossArrays(e, dimension);
             }
 
 
