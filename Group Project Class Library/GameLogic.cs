@@ -219,15 +219,25 @@ namespace Group_Project_Class_Library
         //only call if the list<entity> has more than one entity to avoid unnecessary calls
         public List<Entity> convertToZombie(List<Entity> list) {
             Boolean hasZombie = false;
-
+            List<Entity> zombiesInList = new List<Entity>();
             //check if theres a zombie
-            foreach (Entity e in list) {
-                if (e is Zombie) { 
-                    hasZombie = true;   
+            for (int i = 0; i< list.Count;i++) {
+                if (list[i] is Zombie) {
+                    zombiesInList.Add((Zombie)list[i]);
+                    hasZombie = true;
+                }
+
+                if (list[i] is Human)
+                {
+                    Human h = (Human)list[i];
+                    if (h.getConvertedToZombie() == true) {
+                        zombiesInList.Add(h);
+                        hasZombie = true;
+                    }
                 }
             }
 
-            //If there is a human and zombie in the same spot(represented as a list)
+            //If there is a human and zombie/infected human in the same spot(represented as a list)
             //and that human has not been converted to a zombie, chance of converting that human  to a zombie
             for (int i = 0; i < list.Count; i++) {
                 if (list[i] is Human) { 
@@ -250,7 +260,13 @@ namespace Group_Project_Class_Library
                             randChance = rand.Next(num); 
                             if (randChance == 0) {
                                 h.SetConvertedToZombie(true);
+                                int randZombie = rand.Next(zombiesInList.Count);
+                                list.Remove(zombiesInList[randZombie]);
 
+                                h.setInfectedBy(zombiesInList[randZombie]);
+                                zombiesInList[randZombie].addHumanInfected(h);
+                                zombiesInList[randZombie].IncrementHumansConverted();
+                                list.Add(zombiesInList[randZombie]);
                             }
                         }
 
@@ -395,74 +411,62 @@ namespace Group_Project_Class_Library
             //When num_of_dimensions is >1
             else
             {
-                //going up an array
+                // going up/down an array (justmodify second last coordinate)
                 if (direction == 1)
                 {
-                    // cascading increment/decrement starting from second last coordinate
-                    int startDimension = num_of_dimensions - 2; // secondlast coordinate
+                    int targetDimension = num_of_dimensions - 2; // second last coordinate
 
                     if (indexUpOrDown == 1)
                     {
-                        //increment with carry over
-                        e.Location.coordinates[startDimension]++;
+                        // increment second last coordinate
+                        e.Location.coordinates[targetDimension]++;
 
-                        //handle cascading when coordinate exceeds themax index
-                        for (int i = startDimension; i >= 0; i--)
+                        // handle wrapping if it exceeds max index
+                        if (e.Location.coordinates[targetDimension] >= area.GetLength(targetDimension))
                         {
-                            if (e.Location.coordinates[i] >= area.GetLength(i))
+                            e.Location.coordinates[targetDimension] = 0; // wrap to 0
+
+                            // go to previous dimensions if needed
+                            for (int i = targetDimension - 1; i >= 0; i--)
                             {
-                                e.Location.coordinates[i] = 0; // reset to lowest index
-                                if (i > 0)
+                                e.Location.coordinates[i]++;
+                                if (e.Location.coordinates[i] < area.GetLength(i))
                                 {
-                                    e.Location.coordinates[i - 1]++; // Increment coordinate to the left
+                                    break; // no more cascading needed
                                 }
-                                else
-                                {
-                                    // wraps index back if it overflows
-                                    e.Location.coordinates[i] = area.GetLength(i) - 1;
-                                }
-                            }
-                            else
-                            {
-                                break; 
+                                e.Location.coordinates[i] = 0; // wrap this dimension too
                             }
                         }
                     }
-
-                    //going down an array
                     else
                     {
-                        e.Location.coordinates[startDimension]--;
+                        // decrement secondlast coordinate
+                        e.Location.coordinates[targetDimension]--;
 
-                        //Handles cascading when coordinate goes below zero
-                        for (int i = startDimension; i >= 0; i--)
+                        //handle wrapping if it goes below 0
+                        if (e.Location.coordinates[targetDimension] < 0)
                         {
-                            if (e.Location.coordinates[i] < 0)
+                            e.Location.coordinates[targetDimension] = area.GetLength(targetDimension) - 1; // wrap to max
+
+                            //go to previous dimensions if needed
+                            for (int i = targetDimension - 1; i >= 0; i--)
                             {
-                                e.Location.coordinates[i] = area.GetLength(i) - 1; //highest index
-                                if (i > 0)
+                                e.Location.coordinates[i]--;
+                                if (e.Location.coordinates[i] >= 0)
                                 {
-                                    e.Location.coordinates[i - 1]--; //Decrement coordinate to the left
+                                    break; // no more cascading needed
                                 }
-                                else
-                                {
-                                    // index wraps back if theres an underflow(below zero)
-                                    e.Location.coordinates[i] = 0;
-                                }
-                            }
-                            else
-                            {
-                                break; 
+                                e.Location.coordinates[i] = area.GetLength(i) - 1; // wrap this dimension too
                             }
                         }
                     }
                 }
                 else
                 {
-                    //Move within same array (justmodify last coordinate)
+                    //Move within same array (justmodify last coordinate only)
                     int lastDimension = num_of_dimensions - 1;
 
-                    // Can only go up an index if the last coordinate is 0
+                    // Can only go up an index if the last coordinate is zero
                     if (e.Location.coordinates[lastDimension] == 0)
                     {
                         e.Location.coordinates[lastDimension]++;
@@ -475,8 +479,10 @@ namespace Group_Project_Class_Library
                     // Can move one index up or down
                     else
                     {
-                        if (indexUpOrDown == 1) e.Location.coordinates[lastDimension]++;
-                        else e.Location.coordinates[lastDimension]--;
+                        if (indexUpOrDown == 1)
+                            e.Location.coordinates[lastDimension]++;
+                        else
+                            e.Location.coordinates[lastDimension]--;
                     }
                 }
             }
@@ -485,8 +491,7 @@ namespace Group_Project_Class_Library
             list.Add(e);
             area.SetValue(list, e.Location.coordinates);
 
-            //e = assignCoordinates(e);
-            //return e;
+
         }
 
 
@@ -514,9 +519,9 @@ namespace Group_Project_Class_Library
             else {
                 int[] indexes = new int[num_of_dimensions];
                 if (num_of_dimensions > 1) indexes[0] = rand.Next(area.GetLength(0));
-                if (num_of_dimensions > 2) indexes[1] = rand.Next(area.GetLength(1));
-                if (num_of_dimensions > 3) indexes[2] = rand.Next(area.GetLength(2));
-                if (num_of_dimensions > 4) indexes[3] = rand.Next(area.GetLength(3));
+                if (num_of_dimensions >= 2) indexes[1] = rand.Next(area.GetLength(1));
+                if (num_of_dimensions >= 3) indexes[2] = rand.Next(area.GetLength(2));
+                if (num_of_dimensions >= 4) indexes[3] = rand.Next(area.GetLength(3));
                 if (num_of_dimensions == 5) indexes[4] = rand.Next(area.GetLength(4));
 
                 List<Entity> list = (List<Entity>)area.GetValue(indexes);
@@ -562,7 +567,7 @@ namespace Group_Project_Class_Library
                     List<Entity> eList = (List<Entity>)area.GetValue(humans[i].Location.coordinates);
                     if (eList.Count > 1) {
                         eList = convertToZombie(eList);
-                        area.SetValue(eList, i);
+                        area.SetValue(eList, humans[i].Location.coordinates);
                     }
                 }
 
@@ -572,7 +577,7 @@ namespace Group_Project_Class_Library
                     if (eList.Count > 1)
                     {
                         eList = convertToZombie(eList);
-                        area.SetValue(eList, i);
+                        area.SetValue(eList, zombies[i].Location.coordinates);
                     }
                 }
             return checkEndCondition();

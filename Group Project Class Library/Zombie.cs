@@ -6,49 +6,19 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    internal class Zombie : Entity
+    public class Zombie : Entity
     {
-        private bool isBloodSucker;
-        private bool isBrainSucker;
-        private int humansConverted;
+
 
         public Zombie()
         {
-            // Remove SetZombieId() call - use inherited Entity ID system
+
         }
 
-        public void IncrementHumansConverted()
-        {
-            humansConverted++;
-            if (humansConverted == 100)
-            {
-                SetIsBrainSucker(true);
-            }
-        }
 
-        public bool GetIsBloodSucker()
-        {
-            return isBloodSucker;
-        }
 
-        public void SetIsBloodSucker(bool isBloodSucker)
-        {
-            this.isBloodSucker = isBloodSucker;
-        }
 
-        public bool GetIsBrainSucker()
-        {
-            return isBrainSucker;
-        }
 
-        public void SetIsBrainSucker(bool isBrainSucker)
-        {
-            this.isBrainSucker = isBrainSucker;
-        }
 
-        public int GetHumansConverted()
-        {
-            return humansConverted;
-        }
     }
 }

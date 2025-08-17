@@ -24,6 +24,10 @@ namespace Group_Project_Class_Library
         private HealingFactor healingFactor;
         private bool encounteredZombie;
         private Boolean convertedToZombie;
+        private Entity infectedBy;//can be infected by an infected human
+
+        public void setInfectedBy(Entity z) { infectedBy = z; }
+        public Entity getInfectedBy() { return infectedBy; }
 
         public Human(int age, string occupation, HealingFactor healingFactor)
         {
@@ -57,6 +61,10 @@ namespace Group_Project_Class_Library
         public HealingFactor getHealingFactor() {
             return healingFactor;
         }
+
+
+
+
     }
 
 }
