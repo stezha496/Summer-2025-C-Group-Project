@@ -28,6 +28,7 @@ namespace Group_Project_Console_Test_App
                     gameEnd = g.moveAllEntities();
                     
                 }
+                Console.WriteLine("_________________");
             }
 
             Console.WriteLine("Game ended after {0} iterations", g.getIterations());

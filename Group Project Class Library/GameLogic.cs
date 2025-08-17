@@ -124,8 +124,7 @@ namespace Group_Project_Class_Library
                                 e.Location.coordinates = coordinates;
                             }
                         }
-                    }
-                }
+                    }}
             }
 
             else if (num_of_dimensions == 3)
@@ -148,9 +147,7 @@ namespace Group_Project_Class_Library
                                     e.Location.coordinates = coordinates;
                                 }
                             }
-                        }
-                    }
-                }
+                        }}}
             }
 
             else if (num_of_dimensions == 4)
@@ -177,10 +174,7 @@ namespace Group_Project_Class_Library
 
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
+                            }}}}
             }
 
             else if (num_of_dimensions == 5)
@@ -209,21 +203,10 @@ namespace Group_Project_Class_Library
                                             e.Location.coordinates = coordinates;
                                         }
                                     }
-                                }
-
-
-                            }
-                        }
-                    }
-                }
+                                }}}}}
             }
-
             return e;
         }
-
-
-
-
 
         //initializing entities location
         public Location createLocation(int[] entityDimensions) { 
@@ -232,15 +215,6 @@ namespace Group_Project_Class_Library
 
             return l;
         }
-
-        
-
-
-        
-
-
-
-
 
         //only call if the list<entity> has more than one entity to avoid unnecessary calls
         public List<Entity> convertToZombie(List<Entity> list) {
@@ -303,10 +277,7 @@ namespace Group_Project_Class_Library
                             entityList.Remove(entityList[indx]);
                             area.SetValue(entityList, i);
                         }
-                    }
-
-
-                }
+                    }}
             }
 
             else if (num_of_dimensions == 2)
@@ -323,9 +294,7 @@ namespace Group_Project_Class_Library
                                 entityList.Remove(entityList[indx]);
                                 area.SetValue(entityList, i, j);
                             }
-                        }
-                    }
-                }
+                        }}}
             }
 
             else if (num_of_dimensions == 3)
@@ -344,10 +313,7 @@ namespace Group_Project_Class_Library
                                     entityList.Remove(entityList[indx]);
                                     area.SetValue(entityList, i, j, k);
                                 }
-                            }
-                        }
-                    }
-                }
+                            }}}}
             }
 
             else if (num_of_dimensions == 4)
@@ -368,11 +334,7 @@ namespace Group_Project_Class_Library
                                         entityList.Remove(entityList[indx]);
                                         area.SetValue(entityList, i, j, k ,l);
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
+                                }}}}}
             }
 
             else if (num_of_dimensions == 5)
@@ -395,21 +357,11 @@ namespace Group_Project_Class_Library
                                             entityList.Remove(entityList[indx]);
                                             area.SetValue(entityList, i, j, k, l, m);
                                         }
-                                    }
-                                }
-
-
-                            }
-                        }
-                    }
-                }
+                                    }}}}}}
             }
         }
 
-
-
-
-        public Entity move(Entity e)
+        public void move(Entity e)
         {
             removeHumanFromArea(e.getId());
 
@@ -480,7 +432,6 @@ namespace Group_Project_Class_Library
                     //going down an array
                     else
                     {
-                        
                         e.Location.coordinates[startDimension]--;
 
                         //Handles cascading when coordinate goes below zero
@@ -534,11 +485,9 @@ namespace Group_Project_Class_Library
             list.Add(e);
             area.SetValue(list, e.Location.coordinates);
 
-            e = assignCoordinates(e);
-            return e;
+            //e = assignCoordinates(e);
+            //return e;
         }
-
-
 
 
 
@@ -562,13 +511,15 @@ namespace Group_Project_Class_Library
                     e.Location = createLocation(coordinates);
                 }
             }
+            else {
+                int[] indexes = new int[num_of_dimensions];
+                if (num_of_dimensions > 1) indexes[0] = rand.Next(area.GetLength(0));
+                if (num_of_dimensions > 2) indexes[1] = rand.Next(area.GetLength(1));
+                if (num_of_dimensions > 3) indexes[2] = rand.Next(area.GetLength(2));
+                if (num_of_dimensions > 4) indexes[3] = rand.Next(area.GetLength(3));
+                if (num_of_dimensions == 5) indexes[4] = rand.Next(area.GetLength(4));
 
-            else if (num_of_dimensions == 2)
-            {
-                int oneDimension = rand.Next(area.GetLength(0));
-                int twoDimension = rand.Next(area.GetLength(1));
-                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension);
-
+                List<Entity> list = (List<Entity>)area.GetValue(indexes);
                 if (list.Count > 0)
                 {
                     randomInitialPlace(e);
@@ -577,82 +528,12 @@ namespace Group_Project_Class_Library
                 else
                 {
                     list.Add(e);
-                    area.SetValue(list, oneDimension, twoDimension);
-                    int[] coordinates = { oneDimension, twoDimension };
+                    area.SetValue(list, indexes);
+                    int[] coordinates = indexes;
                     e.Location = createLocation(coordinates);
                 }
-
             }
-
-
-            else if (num_of_dimensions == 3)
-            {
-                int oneDimension = rand.Next(area.GetLength(0));
-                int twoDimension = rand.Next(area.GetLength(1));
-                int threeDimension = rand.Next(area.GetLength(2));
-                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension);
-
-                if (list.Count > 0)
-                {
-                    randomInitialPlace(e);
-                    return 0;
-                }
-                else
-                {
-                    list.Add(e);
-                    area.SetValue(list, oneDimension, twoDimension, threeDimension);
-                    int[] coordinates = { oneDimension, twoDimension, threeDimension };
-                    e.Location = createLocation(coordinates);
-                }
-
-            }
-
-
-            else if (num_of_dimensions == 4)
-            {
-                int oneDimension = rand.Next(area.GetLength(0));
-                int twoDimension = rand.Next(area.GetLength(1));
-                int threeDimension = rand.Next(area.GetLength(2));
-                int fourDimension = rand.Next(area.GetLength(3));
-                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension);
-                if (list.Count > 0)
-                {
-                    randomInitialPlace(e);
-                    return 0;
-                }
-                else
-                {
-                    list.Add(e);
-                    area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension);
-                    int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension };
-                    e.Location = createLocation(coordinates);
-                }
-
-            }
-
-            else if (num_of_dimensions == 5)
-            {
-                int oneDimension = rand.Next(area.GetLength(0));
-                int twoDimension = rand.Next(area.GetLength(1));
-                int threeDimension = rand.Next(area.GetLength(2));
-                int fourDimension = rand.Next(area.GetLength(3));
-                int fiveDimension = rand.Next(area.GetLength(4));
-                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
-                if (list.Count > 0)
-                {
-                    randomInitialPlace(e);
-                    return 0;
-                }
-                else
-                {
-                    list.Add(e);
-                    area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
-                    int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension };
-                    e.Location = createLocation(coordinates);
-                }
-
-            }
-
+            
             e = assignCoordinates(e);
             //add method for saving intital coordinates
             return 1;
@@ -660,6 +541,7 @@ namespace Group_Project_Class_Library
 
 
         //returns true is the game ends
+        //iterate through all lists, if there is a list with more than 1 entity, call convertToZombie
         public Boolean moveAllEntities() {
             humans = universe.getHumans().ToArray();
             zombies = universe.getZombies().ToArray();
@@ -667,116 +549,35 @@ namespace Group_Project_Class_Library
                 currentIteration++;
                 for (int i = 0; i < humans.Length; i++)
                 {
-                    humans[i] = (Human)move(humans[i]);
+                move(humans[i]);
                 }
 
                 for (int i = 0; i < zombies.Length; i++)
                 {
-                    zombies[i] = (Zombie)move(zombies[i]);
+                move(zombies[i]);
                 }
 
-                if (num_of_dimensions == 1)
+                for (int i = 0; i < humans.Length; i++)
                 {
-                    for (int i = 0; i < area.Length; i++)
+                    List<Entity> eList = (List<Entity>)area.GetValue(humans[i].Location.coordinates);
+                    if (eList.Count > 1) {
+                        eList = convertToZombie(eList);
+                        area.SetValue(eList, i);
+                    }
+                }
+
+                for (int i = 0; i < zombies.Length; i++)
+                {
+                    List<Entity> eList = (List<Entity>)area.GetValue(zombies[i].Location.coordinates);
+                    if (eList.Count > 1)
                     {
-                        List<Entity> list = (List<Entity>)area.GetValue(i);
-                        if (list.Count > 1)
-                        {
-                            list = convertToZombie(list);
-                            area.SetValue(list, i);
-                        }
+                        eList = convertToZombie(eList);
+                        area.SetValue(eList, i);
                     }
                 }
-
-                else if (num_of_dimensions > 1)
-                {
-                    int[] indexes = new int[num_of_dimensions];
-                    if(num_of_dimensions > 1) indexes[0]=area.GetLength(0);
-                    else if(num_of_dimensions > 2) indexes[1]=area.GetLength(1);
-                    else if(num_of_dimensions > 3) indexes[2]=area.GetLength(2);
-                    else if(num_of_dimensions > 4) indexes[3]=area.GetLength(3);
-                    else if(num_of_dimensions == 5) indexes[4]=area.GetLength(4);
-
-                    if (num_of_dimensions == 2) {
-                        for (int i = 0; i < area.GetLength(0); i++) {
-                            for (int j = 0; j < area.GetLength(1); j++) {
-                                List<Entity> list = (List<Entity>)area.GetValue(i, j);
-                                if (list.Count > 1)
-                                {
-                                    list = convertToZombie(list);
-                                    area.SetValue(list, i, j);
-                                }
-                            }
-                        }
-                    }
-
-                    else if (num_of_dimensions == 3) {
-                        for (int i = 0; i < area.GetLength(0); i++)
-                        {
-                            for (int j = 0; j < area.GetLength(1); j++)
-                            {
-                                for (int k = 0; k<area.GetLength(2); k++)
-                                {
-                                    List<Entity> list = (List<Entity>)area.GetValue(i, j, k);
-                                    if (list.Count > 1)
-                                    {
-                                        list = convertToZombie(list);
-                                        area.SetValue(list, i, j, k);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    else if (num_of_dimensions == 4) {
-                        for (int i = 0; i < area.GetLength(0); i++)
-                        {
-                            for (int j = 0; j < area.GetLength(1); j++)
-                            {
-                                for (int k = 0; k < area.GetLength(2); k++)
-                                {
-                                    for (int l = 0; l < area.GetLength(3); l++)
-                                    {
-                                        List<Entity> list = (List<Entity>)area.GetValue(i, j, k, l);
-                                        if (list.Count > 1)
-                                        {
-                                            list = convertToZombie(list);
-                                            area.SetValue(list, i, j, k ,l);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    else if (num_of_dimensions == 5) {
-                        for (int i = 0; i < area.GetLength(0); i++)
-                        {
-                            for (int j = 0; j < area.GetLength(1); j++)
-                            {
-                                for (int k = 0; k < area.GetLength(2); k++)
-                                {
-                                    for (int l = 0; l < area.GetLength(3); l++)
-                                    {
-                                        for (int m = 0; m < area.GetLength(4); m++)
-                                        {
-                                            List<Entity> list = (List<Entity>)area.GetValue(i, j, k, l, m);
-                                            if (list.Count > 1)
-                                            {
-                                                list = convertToZombie(list);
-                                                area.SetValue(list, i, j, k, l, m);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-            
             return checkEndCondition();
         }
+
         public void start() {
 
             //for initial console app
@@ -785,15 +586,12 @@ namespace Group_Project_Class_Library
             initialHumans = d.startingHumans();
             initialZombies = d.startingZombies();
 
-
             num_of_dimensions = d.num_of_dimensions();
             universe.setNum_of_dimensions(num_of_dimensions);
 
             dimensions = d.arraySizes(num_of_dimensions);
 
-
             universe.buildUniverse2(dimensions);
-
 
             area = universe.getArea();
 
@@ -804,22 +602,14 @@ namespace Group_Project_Class_Library
                 randomInitialPlace(h);
             }
 
-            
             for (int i = 0; i < initialZombies; i++)
             {
                 Zombie z = new Zombie();
                 universe.addZombie(z);
                 randomInitialPlace(z);
-
             }
             humans = universe.getHumans().ToArray();
             zombies = universe.getZombies().ToArray();
-
-
-
-
         }
-
-
     }
 }
