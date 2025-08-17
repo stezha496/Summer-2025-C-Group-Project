@@ -616,5 +616,60 @@ namespace Group_Project_Class_Library
             humans = universe.getHumans().ToArray();
             zombies = universe.getZombies().ToArray();
         }
+
+        public int[] GetDimensions() { return dimensions; }
+        public Array GetArea() { return area; }
+        public int GetMaxIterations() { return maxIterations; }
+        public void SetMaxIterations(int max) { maxIterations = max; }
+        public void ResetIteration() { currentIteration = 0; }
+
+        public void InitializeFromUI(int maxIter, int initHumans, int initZombies, int[] dims)
+        {
+            maxIterations = maxIter;
+            initialHumans = initHumans;
+            initialZombies = initZombies;
+
+            num_of_dimensions = dims.Length;
+            universe.setNum_of_dimensions(num_of_dimensions);
+            dimensions = dims;
+
+            universe.buildUniverse2(dimensions);
+            area = universe.getArea();
+
+            // place humans
+            for (int i = 0; i < initialHumans; i++)
+            {
+                Human h = universe.createRandomHuman();
+                universe.addHuman(h);
+                randomInitialPlace(h);
+            }
+            // place zombies
+            for (int i = 0; i < initialZombies; i++)
+            {
+                Zombie z = new Zombie();
+                universe.addZombie(z);
+                randomInitialPlace(z);
+            }
+
+            humans = universe.getHumans().ToArray();
+            zombies = universe.getZombies().ToArray();
+            currentIteration = 0;
+        }
+
+        // run exactly one iteration; return true when the simulation should end
+        public bool StepOnce()
+        {
+            return moveAllEntities();
+        }
+
+        public void ClearAll()
+        {
+            universe = new Universe();
+            area = null;
+            humans = null;
+            zombies = null;
+            currentIteration = 0;
+        }
+
     }
 }
