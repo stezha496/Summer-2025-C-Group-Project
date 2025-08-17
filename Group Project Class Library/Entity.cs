@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    internal class Entity
+    public class Entity
     {
         //might be easier if we give each entity a globalID for location tracking
         private static int globalId = 0;

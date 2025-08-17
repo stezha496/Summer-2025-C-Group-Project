@@ -53,6 +53,10 @@ namespace Group_Project_Class_Library
         {
             this.convertedToZombie = convertedToZombie;
         }
+
+        public HealingFactor getHealingFactor() {
+            return healingFactor;
+        }
     }
 
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group_Project_Class_Library
 {
-    internal class Location
+    public class Location
     {
         //Assign location from GameLogic class
         public int[] coordinates { get; set; }
