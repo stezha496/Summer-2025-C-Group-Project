@@ -544,164 +544,118 @@ namespace Group_Project_Class_Library
 
         public int randomInitialPlace(Entity e)
         {
-            bool placed = false;
-            int attempts = 0;
-            int maxAttempts = 1000; // Prevent infinite loops
-
-            while (!placed && attempts < maxAttempts)
+            if (num_of_dimensions == 1)
             {
-                if (num_of_dimensions == 1)
-                {
-                    int oneDimension = rand.Next(area.Length);
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension);
+                int oneDimension = rand.Next(area.Length);
+                List<Entity> list = (List<Entity>)area.GetValue(oneDimension);
 
-                    if (list.Count == 0)
-                    {
-                        list.Add(e);
-                        area.SetValue(list, oneDimension);
-                        int[] coordinates = { oneDimension };
-                        e.Location = createLocation(coordinates);
-                        placed = true;
-                    }
+                if (list.Count > 0)
+                {
+                    randomInitialPlace(e);
+                    return 0;
                 }
-                else if (num_of_dimensions == 2)
+                else
                 {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension);
-
-                    if (list.Count == 0)
-                    {
-                        list.Add(e);
-                        area.SetValue(list, oneDimension, twoDimension);
-                        int[] coordinates = { oneDimension, twoDimension };
-                        e.Location = createLocation(coordinates);
-                        placed = true;
-                    }
-                }
-                else if (num_of_dimensions == 3)
-                {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension);
-
-                    if (list.Count == 0)
-                    {
-                        list.Add(e);
-                        area.SetValue(list, oneDimension, twoDimension, threeDimension);
-                        int[] coordinates = { oneDimension, twoDimension, threeDimension };
-                        e.Location = createLocation(coordinates);
-                        placed = true;
-                    }
-                }
-                else if (num_of_dimensions == 4)
-                {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    int fourDimension = rand.Next(area.GetLength(3));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension);
-
-                    if (list.Count == 0)
-                    {
-                        list.Add(e);
-                        area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension);
-                        int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension };
-                        e.Location = createLocation(coordinates);
-                        placed = true;
-                    }
-                }
-                else if (num_of_dimensions == 5)
-                {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    int fourDimension = rand.Next(area.GetLength(3));
-                    int fiveDimension = rand.Next(area.GetLength(4));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
-
-                    if (list.Count == 0)
-                    {
-                        list.Add(e);
-                        area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
-                        int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension };
-                        e.Location = createLocation(coordinates);
-                        placed = true;
-                    }
-                }
-
-                attempts++;
-            }
-
-            // If we couldn't find an empty spot after maxAttempts, place anyway (allow sharing)
-            if (!placed)
-            {
-                // Force placement in a random location even if occupied
-                if (num_of_dimensions == 1)
-                {
-                    int oneDimension = rand.Next(area.Length);
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension);
                     list.Add(e);
                     area.SetValue(list, oneDimension);
                     int[] coordinates = { oneDimension };
                     e.Location = createLocation(coordinates);
-                    placed = true;
                 }
-                else if (num_of_dimensions == 2)
+            }
+
+            else if (num_of_dimensions == 2)
+            {
+                int oneDimension = rand.Next(area.GetLength(0));
+                int twoDimension = rand.Next(area.GetLength(1));
+                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension);
+
+                if (list.Count > 0)
                 {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension);
+                    randomInitialPlace(e);
+                    return 0;
+                }
+                else
+                {
                     list.Add(e);
                     area.SetValue(list, oneDimension, twoDimension);
                     int[] coordinates = { oneDimension, twoDimension };
                     e.Location = createLocation(coordinates);
-                    placed = true;
                 }
-                else if (num_of_dimensions == 3)
+
+            }
+
+
+            else if (num_of_dimensions == 3)
+            {
+                int oneDimension = rand.Next(area.GetLength(0));
+                int twoDimension = rand.Next(area.GetLength(1));
+                int threeDimension = rand.Next(area.GetLength(2));
+                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension);
+
+                if (list.Count > 0)
                 {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension);
+                    randomInitialPlace(e);
+                    return 0;
+                }
+                else
+                {
                     list.Add(e);
                     area.SetValue(list, oneDimension, twoDimension, threeDimension);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension };
                     e.Location = createLocation(coordinates);
-                    placed = true;
                 }
-                else if (num_of_dimensions == 4)
+
+            }
+
+
+            else if (num_of_dimensions == 4)
+            {
+                int oneDimension = rand.Next(area.GetLength(0));
+                int twoDimension = rand.Next(area.GetLength(1));
+                int threeDimension = rand.Next(area.GetLength(2));
+                int fourDimension = rand.Next(area.GetLength(3));
+                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension);
+                if (list.Count > 0)
                 {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    int fourDimension = rand.Next(area.GetLength(3));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension);
+                    randomInitialPlace(e);
+                    return 0;
+                }
+                else
+                {
                     list.Add(e);
                     area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension };
                     e.Location = createLocation(coordinates);
-                    placed = true;
                 }
-                else if (num_of_dimensions == 5)
+
+            }
+
+            else if (num_of_dimensions == 5)
+            {
+                int oneDimension = rand.Next(area.GetLength(0));
+                int twoDimension = rand.Next(area.GetLength(1));
+                int threeDimension = rand.Next(area.GetLength(2));
+                int fourDimension = rand.Next(area.GetLength(3));
+                int fiveDimension = rand.Next(area.GetLength(4));
+                List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
+                if (list.Count > 0)
                 {
-                    int oneDimension = rand.Next(area.GetLength(0));
-                    int twoDimension = rand.Next(area.GetLength(1));
-                    int threeDimension = rand.Next(area.GetLength(2));
-                    int fourDimension = rand.Next(area.GetLength(3));
-                    int fiveDimension = rand.Next(area.GetLength(4));
-                    List<Entity> list = (List<Entity>)area.GetValue(oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
+                    randomInitialPlace(e);
+                    return 0;
+                }
+                else
+                {
                     list.Add(e);
                     area.SetValue(list, oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension);
                     int[] coordinates = { oneDimension, twoDimension, threeDimension, fourDimension, fiveDimension };
                     e.Location = createLocation(coordinates);
-                    placed = true;
                 }
+
             }
 
             e = assignCoordinates(e);
-            return placed ? 1 : 0;
+            //add method for saving intital coordinates
+            return 1;
         }
 
 

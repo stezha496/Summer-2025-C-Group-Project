@@ -17,7 +17,7 @@ namespace Group_Project_Class_Library
     }
 
 
-    internal class Human : Entity
+    public class Human : Entity
     {
         private int age;
         private string occupation;

@@ -12,18 +12,9 @@ namespace Group_Project_Class_Library
         private bool isBrainSucker;
         private int humansConverted;
 
-        private static int zombieIdCounter = 0;
-
         public Zombie()
         {
-            SetZombieId();
-        }
-
-        private void SetZombieId()
-        {
-            zombieIdCounter++;
-            this.id = zombieIdCounter;
-            
+            // Remove SetZombieId() call - use inherited Entity ID system
         }
 
         public void IncrementHumansConverted()
@@ -60,5 +51,4 @@ namespace Group_Project_Class_Library
             return humansConverted;
         }
     }
-
 }
